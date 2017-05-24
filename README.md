@@ -32,5 +32,6 @@ plot(Galois, layout = galois_layout(Galois))
 G <- do_galois_lattice(southernwomenG, label = "reduced", directed = TRUE)
 # extracting the dominance relations for the women
 Tree <- do_dominance_tree(G, nodes = V(southernwomenG)$name[V(southernwomenG)$type==0])
+plot(Tree)
 ```
 The ```do_galois_lattice``` function returns an igraph object, which is the Galois lattice formed from the two-mode network. ```galois_layout``` will return the level of positional dominance on the y-axis and ```do_dominance_tree``` extracts the positional dominance from the directed reduced labeled Galois Lattice. 
