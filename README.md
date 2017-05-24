@@ -12,3 +12,4 @@ You can install galoislattice from github with:
 # install.packages("devtools")
 devtools::install_github("Siliegia/galoislattice")
 ```
+[![Travis-CI Build Status](https://travis-ci.org/Siliegia/galoislattice.svg?branch=master)](https://travis-ci.org/Siliegia/galoislattice)
