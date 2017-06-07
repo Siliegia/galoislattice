@@ -4,7 +4,8 @@
 \alias{do_galois_lattice}
 \title{Create a Galois lattice}
 \usage{
-do_galois_lattice(X, directed = FALSE, by = "best", label = "partly")
+do_galois_lattice(X, directed = FALSE, by = "best", label = "partly",
+  one_mode = FALSE)
 }
 \arguments{
 \item{X}{a igraph object of a two mode network, or matrix}
@@ -16,6 +17,8 @@ or the most time efficient option}
 
 \item{label}{"partly","full","reduced", depending if the result should have partly labeled nodes as chosen
 with "by" or the full label or an reduced labeling approach}
+
+\item{one_mode}{TRUE/FALSE if the input graph is a one-mode network}
 }
 \value{
 igraph object, a Galois Lattice

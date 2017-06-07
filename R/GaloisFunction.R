@@ -9,6 +9,7 @@
 #' or the most time efficient option
 #' @param label "partly","full","reduced", depending if the result should have partly labeled nodes as chosen
 #' with "by" or the full label or an reduced labeling approach
+#' @param one_mode TRUE/FALSE if the input graph is a one-mode network
 #' 
 #' @return igraph object, a Galois Lattice
 #'
@@ -32,11 +33,31 @@
 
 
 
-do_galois_lattice <- function(X, directed = FALSE, by = "best", label = "partly"){
-  Z <- X
+do_galois_lattice <- function(X, directed = FALSE, by = "best", label = "partly", one_mode = FALSE){
+
   if(is.igraph(X)){
-    X <- as.matrix(get.incidence(X))
-  }
+    if (one_mode){
+      X <- as.matrix(get.adjacency(X))
+    }else{
+      X <- as.matrix(get.incidence(X))
+  }}
+  
+  #rename matrix
+  a1 <- matrix("A", nrow = dim(X)[2], ncol = 1)
+  a2 <- 1:dim(X)[2]
+  a <- paste0(a1,a2)
+  a <- cbind(a,colnames(X))
+  
+  n1 <- matrix("N", nrow = dim(X)[1], ncol = 1 )
+  n2 <- 1:dim(X)[1]
+  n <- paste0(n1,n2)
+  n <- cbind(n,rownames(X))
+  
+  colnames(X) <- a[,1]
+  rownames(X) <- n[,1]
+  
+  Z <- X
+  
   for(i in 1:dim(X)[1]){
     X[i,][X[i,]!=1] <- NA
     X[i,][!is.na(X[i,]==1)] <- rmNA(colnames(X)[X[i,]==1])
@@ -52,17 +73,36 @@ do_galois_lattice <- function(X, directed = FALSE, by = "best", label = "partly"
   Galois <- findeventcomb(input) # use function with this input
   Galois_graph <- simplify(Galois[[2]])
   
-  input2 <- list(t(X)) # define input for the transposed matrix in case the empty set exist and wasnt found
-  input2[[2]] <- make_empty_graph(1, directed = FALSE)
-  V(input[[2]])$name = toString(colnames(t(X)))
-  erg <- findfirst(input2) # do first step of findeventcomb to find edges between empty node and the others
-  erg[1:2] <- NULL
-  auxmaxComb <- unlist(erg)
-  
   if (sum(V(Galois_graph)$name == toString((colnames(t(X))))) == 0){ # insert node and edges if they dont exist
+    
+    result <- list(t(X)) # define input for the transposed matrix in case the empty set exist and wasnt found
+    result[[2]] <- make_empty_graph(1, directed = FALSE)
+    V(result[[2]])$name = toString(colnames(t(X)))
+    erg <- findfirst(result)
+    erg[1:2] <- NULL
+    M2 <- as.matrix(result[[1]])
+    auxmaxComb <- unlist(erg)
+    maxComb <- match(names(auxmaxComb),rownames(M2))
+    names(maxComb) <- names(auxmaxComb)
+      for(i in 1:length(maxComb)){
+        labelM2=c(colnames(M2)[which(!is.na(M2[maxComb[i],]))])
+        if (sum(V(result[[2]])$name == toString(labelM2)) != 0){
+          result[[2]] <- add.edges(result[[2]],c(toString(colnames(M2)),toString(labelM2)))
+        }else{
+          result[[2]] <- add.vertices(result[[2]],1,name = list(toString(labelM2)))
+          result[[2]] <- add.edges(result[[2]],c(toString(colnames(M2)),toString(labelM2)))}}
+    auxgraph <- simplify(result[[2]])
+
+    auxgraph <- do_full_label(GaloisGraph =  auxgraph, OriginalGraph =  Z)
+    L <- V(auxgraph)$name[2:length(V(auxgraph)$name)]
+    L <- lapply(L,strsplit,", ")
+    L <- lapply(L,unlist)
+    L <- lapply(L, intersect, colnames(X))
+    L <- lapply(L, toString)
+
     Galois_graph <- add.vertices(Galois_graph,1,name = toString(colnames(t(X))))
-    for (i in 1:length(auxmaxComb)){
-      Galois_graph <- add.edges(Galois_graph,c(names(auxmaxComb[i]),toString(colnames(t(X)))))
+    for (i in 1:length(L)){
+      Galois_graph <- add.edges(Galois_graph,c(L[[i]],toString(colnames(t(X)))))
     }
   }
   
@@ -72,6 +112,22 @@ do_galois_lattice <- function(X, directed = FALSE, by = "best", label = "partly"
     Galois_graph <- do_full_label(Galois_graph, Z)
     Galois_graph <- do_reduced_label(Galois_graph, Z)
   }
+  
+  l.names <- rbind(a,n)
+  L <- V(Galois_graph)$name
+  L <- lapply(L,strsplit,", ")
+  L <- lapply(L, unlist)
+  u <- lapply(L, match, table = l.names)
+  u2 <- lapply(u, function(x){res <- toString(l.names[x,2])})
+  if (u2[[1]] == "NA"){
+    u2[[1]] <- "0"}
+  if (u2[[length(u2)]] == "NA"){
+    u2[[length(u2)]] <- "00"}
+  
+  lab <- lapply(u2, function(x){if (x == "NA"){x= ""}else {x = x}})
+  
+  V(Galois_graph)$name <- lab
+  
   return(Galois_graph)
 }
 
@@ -125,6 +181,7 @@ findeventcomb <- function(result){ #actual Algorithm finding the Galloislattice
   test <- colnames(M2)
   if(!(dim(M2)[1]==0 & dim(M2)[2]==0) & any(!is.na(M2)) & length(test) > 1){
     for(i in 1:length(maxComb)){
+      #logdebug('%s %d',rownames(M2)[maxComb[i]], i)
       #print(i)
       #message( rownames(M2)[maxComb[i]] , " : ",paste0(colnames(M2)[which(!is.na(M2[maxComb[i],]))], collapse = ","))
       vt <- toString(colnames(M2))

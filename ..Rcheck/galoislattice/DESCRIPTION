@@ -1,0 +1,16 @@
+Package: galoislattice
+Title: Galois Lattice and Positional Dominance
+Version: 0.1
+Author: Maria Mircea
+Date: 2017-03-06
+Description: Builds a Galois lattice of a binary two-mode network. It can be
+    used to identify hierarchical structures in the data. A dominance tree can
+    be build which describes the positional dominance between nodes by using the
+    shortest paths. Also a hierarchical layout is included to see the structure
+    accordingly.
+Maintainer: Maria Mircea <maria.mircea@hfp.tum.de>
+License: GPL-2
+Depends: R (>= 3.2.0), igraph
+RoxygenNote: 5.0.1
+LazyData: true
+Built: R 3.3.0; ; 2017-04-04 22:51:09 UTC; windows

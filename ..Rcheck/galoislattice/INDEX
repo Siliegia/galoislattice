@@ -1,0 +1,5 @@
+do_dominance_tree       Find dominace Tree
+do_full_label           Get full Labeling of Galois Lattice
+do_galois_lattice       Create a Galois lattice
+do_reduced_label        Get Reduced Labelling of Galois Lattice
+galois_layout           Layout for plotting a Galois lattice
