@@ -9,7 +9,7 @@
 \href{https://networkdata.ics.uci.edu/netdata/html/davis.html}{networkdata}
 }
 \usage{
-data(southernwomenG)
+data(southernwomenM)
 }
 \description{
 Data was collected in 1930 for ethnographic studies by Davis, Gardner and Gardner. It consists of 18 women attending

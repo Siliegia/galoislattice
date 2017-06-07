@@ -5,7 +5,7 @@
 #'
 #' @docType data
 #'
-#' @usage data(southernwomenG)
+#' @usage data(southernwomenM)
 #'
 #' @format An object of class \code{matrix}
 #'
