@@ -42,6 +42,10 @@ do_galois_lattice <- function(X, directed = FALSE, by = "best", label = "partly"
       X <- as.matrix(get.incidence(X))
   }}
   
+  if (sum(not_in(X,c(0,1)))>0){
+    X[not_in(X,c(0,1))] = 1
+  }
+  
   #rename matrix
   a1 <- matrix("A", nrow = dim(X)[2], ncol = 1)
   a2 <- 1:dim(X)[2]
@@ -133,7 +137,7 @@ do_galois_lattice <- function(X, directed = FALSE, by = "best", label = "partly"
 
 
 #########################################################Axillary-functions to obtain Galois Lattices
-
+not_in <- function (x, table) match(x, table, nomatch = 0L) == 0L
 size <- function(x) length(x[!is.na(x)])
 rmNA <- function(x) x[!is.na(x)]
 
