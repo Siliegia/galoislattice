@@ -1,7 +1,7 @@
 [![Travis-CI Build Status](https://travis-ci.org/Siliegia/galoislattice.svg?branch=master)](https://travis-ci.org/Siliegia/galoislattice)
 
 # galoislattice
-A R package to create Galois lattices for two-mode networks and analyze them. By using a reduced label for directed galois lattices,
+A R package to create Galois lattices (Concept Lattice) for two-mode networks and analyze them. By using a reduced label for directed galois lattices,
 the positional dominance of the original network can be extracted. 
 
 This package depends on the R package igraph.
