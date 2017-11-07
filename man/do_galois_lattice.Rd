@@ -4,7 +4,7 @@
 \alias{do_galois_lattice}
 \title{Create a Galois lattice}
 \usage{
-do_galois_lattice(X, directed = FALSE, by = "best", label = "partly",
+do_galois_lattice(X, directed = FALSE, by = "best", label = "reduced",
   one_mode = FALSE)
 }
 \arguments{
@@ -42,4 +42,3 @@ Galois <- do_galois_lattice(M)
 and \code{\link{galois_layout}} for correct hierarchical plots and 
 \code{\link{do_dominance_tree}} for extracting positional dominance from a galois lattice
 }
-

@@ -21,8 +21,6 @@
 #' colnames(M) <- c("A", "B", "C", "D")
 #' rownames(M) <- as.character(1:6)
 #' Galois <- do_galois_lattice(M)
-#' Galois <- do_full_label(Galois, M)
-#' Galois <- do_reduced_label(Galois, M)
 #' plot(Galois, layout = galois_layout(Galois))
 #' 
 #' 

@@ -23,8 +23,6 @@ M=matrix(c(1,1,1,0,0,0,
 colnames(M) <- c("A", "B", "C", "D")
 rownames(M) <- as.character(1:6)
 Galois <- do_galois_lattice(M)
-Galois <- do_full_label(Galois, M)
-Galois <- do_reduced_label(Galois, M)
 plot(Galois, layout = galois_layout(Galois))
 
 
@@ -32,4 +30,3 @@ plot(Galois, layout = galois_layout(Galois))
 \seealso{
 \code{\link{do_dominance_tree}} for extracting positional dominance from a galois lattice
 }
-

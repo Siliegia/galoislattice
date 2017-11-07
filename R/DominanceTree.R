@@ -40,6 +40,15 @@
 #' 
 
 do_dominance_tree <- function(graph, nodes, from = names(head(V(graph),n=1)),to = names(tail(V(graph),n=1))){
+  nodes <- graph$match.name[match(nodes, table = graph$match.name[,2]),1]
+  
+  if(is.character(from)){
+    from <- unlist(V(graph)$l.name[match(from, table = V(graph)$name)])}
+  if(is.character(to)){
+    to <- unlist(V(graph)$l.name[match(to, table = V(graph)$name)])}
+  
+  V(graph)$name <- V(graph)$l.name 
+  
   res <- all_simple_paths(graph,from = from, to = to)
   test <- make_empty_graph(n=1,directed= TRUE)
   V(test)$name <- from
@@ -50,6 +59,11 @@ do_dominance_tree <- function(graph, nodes, from = names(head(V(graph),n=1)),to 
     bigTree <- delete_vertices(bigTree, names(head(V(graph),n=1)))}
   if (!is.element(names(tail(V(graph),n=1)),nodes)){
     bigTree <- delete_vertices(bigTree, names(tail(V(graph),n=1)))}
+  
+  L.name <- V(bigTree)$name
+  Lnew.name <- graph$match.name[match(L.name, graph$match.name[,1]),2]
+  
+  V(bigTree)$name <- Lnew.name
   
   return(bigTree)
 }

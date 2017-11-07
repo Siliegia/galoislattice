@@ -46,4 +46,3 @@ plot(T)
 \seealso{
 \code{\link{do_galois_lattice}} for constructing the according input graph
 }
-

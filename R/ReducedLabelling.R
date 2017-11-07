@@ -23,7 +23,7 @@
 #' 1,1,0,1,0,1),nrow=6)
 #' colnames(M) <- c("A", "B", "C", "D")
 #' rownames(M) <- as.character(1:6)
-#' Galois <- do_galois_lattice(M)
+#' Galois <- do_galois_lattice(M, label = "partly)
 #' Galois <- do_full_label(Galois, M)
 #' Galois <- do_reduced_label(Galois, M)
 #' 

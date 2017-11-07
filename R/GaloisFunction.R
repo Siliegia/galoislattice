@@ -33,7 +33,7 @@
 
 
 
-do_galois_lattice <- function(X, directed = FALSE, by = "best", label = "partly", one_mode = FALSE){
+do_galois_lattice <- function(X, directed = FALSE, by = "best", label = "reduced", one_mode = FALSE){
 
   if(is.igraph(X)){
     if (one_mode){
@@ -118,6 +118,7 @@ do_galois_lattice <- function(X, directed = FALSE, by = "best", label = "partly"
   }
   
   l.names <- rbind(a,n)
+  V(Galois_graph)$l.name <- V(Galois_graph)$name
   L <- V(Galois_graph)$name
   L <- lapply(L,strsplit,", ")
   L <- lapply(L, unlist)
@@ -131,7 +132,8 @@ do_galois_lattice <- function(X, directed = FALSE, by = "best", label = "partly"
   lab <- lapply(u2, function(x){if (x == "NA"){x= ""}else {x = x}})
   
   V(Galois_graph)$name <- lab
-  
+  Galois_graph$match.name <- l.names
+
   return(Galois_graph)
 }
 

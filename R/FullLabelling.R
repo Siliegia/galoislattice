@@ -21,7 +21,7 @@
 #' 1,1,0,1,0,1),nrow=6)
 #' colnames(M) <- c("A", "B", "C", "D")
 #' rownames(M) <- as.character(1:6)
-#' Galois <- do_galois_lattice(M)
+#' Galois <- do_galois_lattice(M, label = "partly")
 #' Galois <- do_full_label(Galois, M)
 #' 
 #' @export
@@ -29,13 +29,35 @@
 
 
 do_full_label <- function(GaloisGraph, OriginalGraph){
-  if (!is.igraph(OriginalGraph)){ OriginalGraph <- graph.incidence(OriginalGraph)}
-  Ziel <- V(GaloisGraph)$name
+  
+  if(length(V(GaloisGraph)$l.name) == 0){
+    Ziel <- V(GaloisGraph)$name
+    if (!is.igraph(OriginalGraph)){
+      OriginalGraph <- graph.incidence(OriginalGraph)
+    }}else{
+      if (!is.igraph(OriginalGraph)){ 
+        OriginalGraph <- graph.incidence(OriginalGraph)
+        V(OriginalGraph)$name <- unlist(GaloisGraph$match.name[match(V(OriginalGraph)$name, table = GaloisGraph$match.name[,2]),1])
+        Ziel <- V(GaloisGraph)$l.name
+      }else{
+        V(OriginalGraph)$name <- unlist(GaloisGraph$match.name[match(V(OriginalGraph)$name, table = GaloisGraph$match.name[,2]),1])
+        Ziel <- V(GaloisGraph)$l.name
+      }}
+  
   Ziel <- lapply(Ziel,strsplit,", ")
   Ziel <- lapply(Ziel,unlist)
   Grlabel <- lapply(Ziel,combining,OriginalGraph)
-  Grlabel <- lapply(Grlabel,toString)
-  V(GaloisGraph)$name <- Grlabel
+  if(length(V(GaloisGraph)$l.name) != 0){
+    Grname <- lapply(Grlabel, function(x){GaloisGraph$match.name[match(x,GaloisGraph$match.name[,1]),2]})
+    Grname <- lapply(Grname,toString)
+    Grlabel <- lapply(Grlabel,toString)
+    V(GaloisGraph)$name <- Grname
+    V(GaloisGraph)$l.name <- Grlabel
+  }else{
+    Grlabel <- lapply(Grlabel,toString)
+    V(GaloisGraph)$name <- Grlabel
+  }
+  
   return(GaloisGraph)
 }
 
