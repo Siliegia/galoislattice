@@ -60,18 +60,24 @@ do_dominance_tree <- function(graph, nodes, from = names(head(V(graph),n=1)),to 
   if (!is.element(names(tail(V(graph),n=1)),nodes)){
     bigTree <- delete_vertices(bigTree, names(tail(V(graph),n=1)))}
   
+  V(bigTree)$l.name <- unlist(V(bigTree)$name)
   L.name <- V(bigTree)$name
-  Lnew.name <- graph$match.name[match(L.name, graph$match.name[,1]),2]
+  L.name <- strsplit(L.name,split = ",")
+  L.name <- lapply(L.name, function(x){graph$match.name[match(x,graph$match.name[,1]),2]})
+  L.name <- lapply(L.name,toString)
   
-  V(bigTree)$name <- Lnew.name
+  V(bigTree)$name <- unlist(L.name)
   
   return(bigTree)
 }
 
 ############################################## Auxilliary Function
 do_tree <- function(L,nodes,test, graph){
-  L2 <- intersect(unlist(strsplit(as.character(names(L)),", ")),c(nodes,names(head(V(graph),n=1)),
-                                                                  names(tail(V(graph),n=1))))
+
+  z <- mapply(function(x){paste(intersect(unlist(strsplit(x,", ")),c(nodes,names(head(V(graph),n=1)),names(tail(V(graph),n=1)))), collapse = ',')},
+        names(L))
+  L2 <- setdiff(z, "")
+  
   for (i in 2:length(L2)){
     test <- add.vertices(test,1, name = L2[i])
     test <- add.edges(test,c(L2[i-1],L2[i]))

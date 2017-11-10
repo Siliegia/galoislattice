@@ -51,11 +51,11 @@ do_full_label <- function(GaloisGraph, OriginalGraph){
     Grname <- lapply(Grlabel, function(x){GaloisGraph$match.name[match(x,GaloisGraph$match.name[,1]),2]})
     Grname <- lapply(Grname,toString)
     Grlabel <- lapply(Grlabel,toString)
-    V(GaloisGraph)$name <- Grname
-    V(GaloisGraph)$l.name <- Grlabel
+    V(GaloisGraph)$name <- unlist(Grname)
+    V(GaloisGraph)$l.name <- unlist(Grlabel)
   }else{
     Grlabel <- lapply(Grlabel,toString)
-    V(GaloisGraph)$name <- Grlabel
+    V(GaloisGraph)$name <- unlist(Grlabel)
   }
   
   return(GaloisGraph)

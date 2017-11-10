@@ -69,8 +69,8 @@ do_reduced_label <- function(GaloisGraph, OriginalGraph){ # actual function to r
   if (out[[length(out)]] == ""){
     out[[length(out)]] <- "00"}
   
-  V(GaloisGraph)$name <- out
-  V(GaloisGraph)$l.name <- out5
+  V(GaloisGraph)$name <- unlist(out)
+  V(GaloisGraph)$l.name <- unlist(out5)
   }else{
     out5 <- vector("list", length(L))
     for (i in 1:length(Newlabel1)){
@@ -81,7 +81,7 @@ do_reduced_label <- function(GaloisGraph, OriginalGraph){ # actual function to r
     if (out5[[length(out5)]] == ""){
       out5[[length(out5)]] <- "00"}
   
-    V(GaloisGraph)$name <- out5
+    V(GaloisGraph)$name <- unlist(out5)
     }
   
   return(GaloisGraph)
