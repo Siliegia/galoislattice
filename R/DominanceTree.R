@@ -55,9 +55,9 @@ do_dominance_tree <- function(graph, nodes, from = names(head(V(graph),n=1)),to 
   Tree <- lapply(res,do_tree,nodes = nodes, test = test, graph = graph)
   bigTree <- Reduce(union,Tree)
   
-  if (!is.element(names(head(V(graph),n=1)),nodes)){
+  if (!is.element(unlist(strsplit(names(head(V(graph),n=1)), ",")),nodes)[1]){
     bigTree <- delete_vertices(bigTree, names(head(V(graph),n=1)))}
-  if (!is.element(names(tail(V(graph),n=1)),nodes)){
+  if (!is.element(unlist(strsplit(names(tail(V(graph),n=1)), ",")),nodes)[1]){
     bigTree <- delete_vertices(bigTree, names(tail(V(graph),n=1)))}
   
   V(bigTree)$l.name <- unlist(V(bigTree)$name)
